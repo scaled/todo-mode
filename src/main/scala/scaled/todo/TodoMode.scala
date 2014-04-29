@@ -17,7 +17,8 @@ object TodoConfig extends Config.Defs {
 
   // map TextMate grammar scopes to Scaled style definitions
   val effacers = List(
-    effacer("markup.heading", sectionStyle),
+    effacer("markup.heading", headerStyle),
+    effacer("markup.subheading", subHeaderStyle),
     // effacer("markup.list", listStyle),
     effacer("markup.list.complete", doneStyle)
   )
@@ -33,6 +34,7 @@ object TodoConfig extends Config.Defs {
     // we have to specify a return type here to work around scalac bug; meh
     val patterns :List[Rule] = List(
       single("""^\* .*$""", name=Some("markup.heading")),
+      single("""^\*\* .*$""", name=Some("markup.subheading")),
       single("""^\s*- .*$""", name=Some("markup.list")),
       single("""^\s*x .*$""", name=Some("markup.list.complete"))
     )
