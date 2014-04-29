@@ -1,0 +1,7 @@
+/**
+ * Styles for todo-mode.
+ */
+
+.textDoneFace {
+  -fx-strikethrough: true;
+}
