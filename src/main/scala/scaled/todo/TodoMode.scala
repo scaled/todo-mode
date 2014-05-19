@@ -44,7 +44,7 @@ object TodoConfig extends Config.Defs {
 }
 
 @Major(name="todo",
-       tags=Array("project", "todo"),
+       tags=Array("text", "project", "todo"),
        pats=Array("TODO.*"),
        desc="A major mode for editing TODO files.")
 class TodoMode (env :Env) extends GrammarTextMode(env) {
