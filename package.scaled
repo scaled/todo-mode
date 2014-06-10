@@ -1,8 +1,8 @@
    name: todo-mode
+ source: git:https://github.com/scaled/todo-mode.git
 version: 1.0
 descrip: Provides support for editing TODO files.
  weburl: https://github.com/scaled/todo-mode
- srcurl: git:https://github.com/scaled/todo-mode.git
 license: New BSD
  srcdir: src/main/scala
  bindir: target/classes
