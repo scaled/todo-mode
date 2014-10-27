@@ -23,7 +23,7 @@ object TodoConfig extends Config.Defs {
     effacer("markup.list.complete", doneStyle)
   )
 
-  val todoGrammar = new Grammar(
+  def todoGrammar = new Grammar(
     name      = "TODO",
     scopeName = "text.todo",
     foldingStartMarker = None,
@@ -40,7 +40,7 @@ object TodoConfig extends Config.Defs {
     )
   }
 
-  lazy val grammars = Seq(todoGrammar)
+  lazy val grammars = Grammar.Set(todoGrammar)
 }
 
 @Major(name="todo",
