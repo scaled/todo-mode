@@ -9,38 +9,44 @@ import scaled.grammar._
 import scaled.major.TextConfig
 
 object TodoConfig extends Config.Defs {
-  import TextConfig._
-  import GrammarConfig._
 
   /** The CSS style applied to `done` list entries. */
   val doneStyle = "textDoneFace"
+}
 
-  // map TextMate grammar scopes to Scaled style definitions
-  val effacers = List(
+@Plugin(tag="textmate-grammar")
+class TodoGrammarPlugin extends GrammarPlugin {
+  import TextConfig._
+  import TodoConfig._
+
+  def grammars = Map("text.todo" -> "unused")
+
+  override def grammar (scopeName :String) = scopeName match {
+    case "text.todo" => new Grammar(
+      name      = "TODO",
+      scopeName = "text.todo",
+      foldingStartMarker = None,
+      foldingStopMarker  = None) {
+
+      val repository = Map[String,Rule]()
+
+      // we have to specify a return type here to work around scalac bug; meh
+      val patterns :List[Rule] = List(
+        single("""^\* .*$""", name=Some("markup.heading")),
+        single("""^\*\* .*$""", name=Some("markup.subheading")),
+        single("""^\s*- .*$""", name=Some("markup.list")),
+        single("""^\s*x .*$""", name=Some("markup.list.complete"))
+      )
+    }
+    case _ => super.grammar(scopeName)
+  }
+
+  override def effacers = List(
     effacer("markup.heading", headerStyle),
     effacer("markup.subheading", subHeaderStyle),
     // effacer("markup.list", listStyle),
     effacer("markup.list.complete", doneStyle)
   )
-
-  def todoGrammar = new Grammar(
-    name      = "TODO",
-    scopeName = "text.todo",
-    foldingStartMarker = None,
-    foldingStopMarker  = None) {
-
-    val repository = Map[String,Rule]()
-
-    // we have to specify a return type here to work around scalac bug; meh
-    val patterns :List[Rule] = List(
-      single("""^\* .*$""", name=Some("markup.heading")),
-      single("""^\*\* .*$""", name=Some("markup.subheading")),
-      single("""^\s*- .*$""", name=Some("markup.list")),
-      single("""^\s*x .*$""", name=Some("markup.list.complete"))
-    )
-  }
-
-  lazy val grammars = Grammar.Set(todoGrammar)
 }
 
 @Major(name="todo",
@@ -53,6 +59,5 @@ class TodoMode (env :Env) extends GrammarTextMode(env) {
 
   override def configDefs = TodoConfig :: super.configDefs
   override def stylesheets = stylesheetURL("/todo.css") :: super.stylesheets
-  override protected def grammars = TodoConfig.grammars
-  override protected def effacers = TodoConfig.effacers
+  override def langScope = "text.todo"
 }
