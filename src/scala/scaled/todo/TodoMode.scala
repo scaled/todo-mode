@@ -55,7 +55,7 @@ class TodoGrammarPlugin extends GrammarPlugin {
        desc="A major mode for editing TODO files.")
 class TodoMode (env :Env) extends GrammarTextMode(env) {
 
-  override def dispose () {} // nada for now
+  override def dispose () :Unit = {} // nada for now
 
   override def configDefs = TodoConfig :: super.configDefs
   override def stylesheets = stylesheetURL("/todo.css") :: super.stylesheets
